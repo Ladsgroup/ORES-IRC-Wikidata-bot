@@ -69,7 +69,11 @@ class Ghaher69Bot(pywikibot.Bot):
 
     def flush_away(self, res):
         client = MyClient('Dexbot', res)
-        client.connect('irc.freenode.net', tls=True)
+        try:
+            client.connect('irc.freenode.net', tls=True)
+        except ValueError:
+            time.sleep(300)
+            self.flush_away(res)
         print('Trying to connect')
         client.connection.setup_handlers()
         client.connection.eventloop.io_loop.add_timeout(
